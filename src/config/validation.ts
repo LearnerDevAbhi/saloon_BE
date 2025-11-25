@@ -10,4 +10,5 @@ export const validationSchema = Joi.object({
   JWT_ACCESS_EXPIRATION: Joi.string().default('15m'),
   JWT_REFRESH_EXPIRATION: Joi.string().default('7d'),
   BCRYPT_SALT_ROUNDS: Joi.number().default(12),
+  SALOON_FE_URL: Joi.string().uri()
 });

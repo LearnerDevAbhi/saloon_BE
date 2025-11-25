@@ -7,9 +7,11 @@ import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+  const configService = app.get(ConfigService);
+
   app.enableCors({
     origin: [
-      'https://saloonfe-production.up.railway.app/', // your actual FE URL
+      configService.get<boolean>('cors.feUrl'), // your actual FE URL
       'http://localhost:5174',                // for local dev
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -35,7 +37,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
 
-  const configService = app.get(ConfigService);
   const port = configService.get<number>('app.port', 3000);
   await app.listen(port);
 }

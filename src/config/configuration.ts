@@ -14,4 +14,7 @@ export default () => ({
     refreshTokenTtl: process.env.JWT_REFRESH_EXPIRATION ?? '7d',
     bcryptSaltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '12', 10),
   },
+  cors:{
+    feUrl: process.env.SALOON_FE_URL ?? 'localhost:5174'
+  }
 });
