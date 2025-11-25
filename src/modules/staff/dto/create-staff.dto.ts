@@ -8,8 +8,6 @@ import {
 } from 'class-validator';
 
 export class CreateStaffDto {
-  @IsUUID()
-  userId: string;
 
   @IsString()
   role: string;
@@ -31,6 +29,10 @@ export class CreateStaffDto {
 
   @Matches(/^\d{2}:\d{2}$/)
   endTime: string;
+
+
+  @IsUUID()
+  createdBy: string;
 
   @IsArray()
   @ArrayNotEmpty()

@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { UserRole } from '../../../common/enums/role.enum';
 import { Booking } from '../../bookings/entities/booking.entity';
+import { Staff } from 'src/modules/staff/entities/staff.entity';
 
 @Entity('users')
 export class User {
@@ -35,11 +36,14 @@ export class User {
   @Column({ type: 'enum', enum: UserRole, default: UserRole.CUSTOMER })
   role: UserRole;
 
-  @Column({ nullable: true })
+  @Column({ type:'text', nullable: true })
   refreshTokenHash?: string | null;
 
   @OneToMany(() => Booking, (booking) => booking.customer)
   bookings: Booking[];
+
+  @OneToMany(() => Staff, (staff) => staff.createdBy)
+  staffs: Staff[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

@@ -19,7 +19,8 @@ export class StaffService {
   ) {}
 
   async create(createStaffDto: CreateStaffDto) {
-    const user = await this.usersService.findById(createStaffDto.userId);
+    try {
+    const user = await this.usersService.findById(createStaffDto.createdBy);
     if (user.role !== UserRole.STAFF && user.role !== UserRole.ADMIN) {
       throw new BadRequestException('User must have staff role');
     }
@@ -28,17 +29,21 @@ export class StaffService {
     const services = await this.fetchServices(createStaffDto.serviceIds);
 
     const staff = this.staffRepository.create({
-      user,
       name: createStaffDto.name ?? user.name,
       email: createStaffDto.email ?? user.email,
       phone: createStaffDto.phone ?? user.phone,
       role: createStaffDto.role,
       startTime: createStaffDto.startTime,
       endTime: createStaffDto.endTime,
+      createdBy: createStaffDto.createdBy,
       weeklyOffDays: createStaffDto.weeklyOffDays,
       services,
     });
     return this.staffRepository.save(staff);
+    } catch (error) {
+      console.error("Error in create staff ",error )
+    }
+    
   }
 
   findAll() {
@@ -60,12 +65,11 @@ export class StaffService {
       staff.services = await this.fetchServices(updateStaffDto.serviceIds);
     }
 
-    if (updateStaffDto.userId && updateStaffDto.userId !== staff.user.id) {
-      const user = await this.usersService.findById(updateStaffDto.userId);
+    if (updateStaffDto.id && updateStaffDto.id !== staff.createdBy) {
+      const user = await this.usersService.findById(updateStaffDto.id);
       if (user.role !== UserRole.STAFF && user.role !== UserRole.ADMIN) {
         throw new BadRequestException('User must have staff role');
       }
-      staff.user = user;
     }
 
     const nextStart = updateStaffDto.startTime ?? staff.startTime;

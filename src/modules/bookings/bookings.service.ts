@@ -76,8 +76,7 @@ export class BookingsService {
 
     if (requestUser.role === UserRole.STAFF) {
       const staff = await this.staffRepository.findOne({
-        where: { user: { id: requestUser.userId } },
-        relations: ['user'],
+      where:{id:requestUser.userId}
       });
       if (!staff) {
         return [];
@@ -100,9 +99,8 @@ export class BookingsService {
 
     if (requestUser.role === UserRole.STAFF) {
       const staff = await this.staffRepository.findOne({
-        where: { user: { id: requestUser.userId } },
-        relations: ['user'],
-      });
+        where: { id: requestUser.userId  }
+         });
       if (staff && booking.staff.id === staff.id) {
         return booking;
       }

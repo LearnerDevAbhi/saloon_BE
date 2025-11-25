@@ -7,6 +7,7 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -17,6 +18,7 @@ import { Booking } from '../../bookings/entities/booking.entity';
 
 @Entity('staff')
 export class Staff {
+  
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -32,9 +34,6 @@ export class Staff {
   @Column({ comment: 'Displayed role e.g. Hair Stylist' })
   role: string;
 
-  @OneToOne(() => User, { eager: true })
-  @JoinColumn()
-  user: User;
 
   @ManyToMany(() => ServiceEntity, (service) => service.staff, { eager: true })
   @JoinTable({ name: 'staff_services' })
@@ -52,8 +51,14 @@ export class Staff {
   @OneToMany(() => Booking, (booking) => booking.staff)
   bookings: Booking[];
 
-  @CreateDateColumn({ type: 'timestamptz' })
-  createdAt: Date;
+
+  @Column({ type: 'uuid' })
+  createdBy: string;
+
+  @ManyToOne(() => User, (user) => user.staffs)
+  @JoinColumn({ name: 'createdBy' })
+  createdByUser: User;
+
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;

@@ -17,7 +17,7 @@ async function bootstrap() {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
-
+  
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Salon & Spa Booking API')
     .setDescription('Production-ready backend for Salon/Spa booking management')
