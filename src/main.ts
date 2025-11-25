@@ -7,6 +7,14 @@ import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+  app.enableCors({
+    origin: [
+      'https://saloonfe-production.up.railway.app/', // your actual FE URL
+      'http://localhost:5174',                // for local dev
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
   app.use(helmet());
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
