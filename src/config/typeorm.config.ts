@@ -8,5 +8,6 @@ export const typeOrmModuleFactory = async (
   url: configService.get<string>('database.url'),
   autoLoadEntities: true,
   synchronize: false,
-  logging: true
+  logging: configService.get<boolean>('database.logging') ?? true,
+  ssl: configService.get<boolean>('database.ssl') ?? false
 });
